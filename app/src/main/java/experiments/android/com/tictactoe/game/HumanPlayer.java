@@ -6,25 +6,34 @@ package experiments.android.com.tictactoe.game;
 
 public class HumanPlayer implements IPlayer {
 
-    public Cell.CellState vlaue = Cell.CellState.CROSS;
+    public final Cell.CellState seed;
+    private final String name;
+    private IPlayerListener listener;
+
+    public HumanPlayer(String name, Cell.CellState seed) {
+        this.name = name;
+        this.seed = seed;
+    }
 
     @Override
-    public Cell.CellState getValue() {
+    public Cell.CellState getSeed() {
         return Cell.CellState.CROSS;
     }
 
     @Override
-    public boolean isHuman() {
-        return true;
-    }
-
-    @Override
     public void play() {
-
+        if (listener != null) {
+            listener.onManualMove();
+        }
     }
 
     @Override
     public String getName() {
-        return getClass().getSimpleName();
+        return name;
+    }
+
+    @Override
+    public void setListener(IPlayerListener listener) {
+        this.listener = listener;
     }
 }

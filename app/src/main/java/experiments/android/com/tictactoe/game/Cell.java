@@ -7,6 +7,7 @@ package experiments.android.com.tictactoe.game;
 public class Cell {
 
     CellState state = CellState.EMPTY;
+    private boolean empty;
 
     public void setValue(CellState value) {
         this.state = value;
@@ -14,6 +15,10 @@ public class Cell {
 
     public CellState getState() {
         return this.state;
+    }
+
+    public boolean isEmpty() {
+        return state == CellState.EMPTY;
     }
 
     public enum CellState {
@@ -43,6 +48,7 @@ public class Cell {
 
                 case CROSS:
                     return "X";
+
                 case NOUGHT:
                     return "O";
 

@@ -12,4 +12,6 @@ public interface GameBoardView extends TTTView {
     void showBoard(Cell[][] size);
 
     void updateScoreboard(GameScoreBoard scoreBoard);
+
+    void showRestart(boolean show);
 }

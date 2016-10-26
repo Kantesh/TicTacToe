@@ -1,64 +1,21 @@
 package experiments.android.com.tictactoe.game;
 
-import experiments.android.com.tictactoe.Constants;
-
 /**
  * Created by kanteshb on 10/25/16.
  */
 
 public class GameEngine {
 
-    public interface GameListener {
-        void onGameFinished(IPlayer winner);
-        void onGameDraw();
-        void cellAlreadySeeded();
+    public GameEngine() {
     }
+/*
 
-    private final GameBoard gameBoard;
-    private HumanPlayer humanPlayer;
-    private MachinePlayer machinePlayer;
-    private IPlayer payer;
-    private GameListener listener;
-
-    public GameEngine(GameBoard gameBoard, GameListener listener) {
-        this.gameBoard = gameBoard;
-        this.listener = listener;
-        init();
-    }
-
-    public void init() {
-        humanPlayer = new HumanPlayer();
-        machinePlayer = new MachinePlayer();
-
-        this.payer = humanPlayer;
-    }
-
-    public void flipTurn() {
-        payer = payer.isHuman() ? machinePlayer : humanPlayer;
-    }
-
-    public boolean markCell(int row, int col) {
-        if (isCellAvailable(row, col)) {
-            gameBoard.setCellValue(row, col, payer.getValue());
-            if (!checkGameStatus())
-                flipTurn();
-            return true;
-        } else {
-            this.listener.cellAlreadySeeded();
-            return false;
-        }
-    }
-
-    private boolean isCellAvailable(int row, int col) {
-        return gameBoard.getCell(row, col).getState() == Cell.CellState.EMPTY;
-    }
-
-    private boolean checkGameStatus() {
-        GameStatus status = getGameStatus();
+    public boolean checkGameStatus(GameBoard gameBoard) {
+        GameStatus status = getGameStatus(gameBoard.getCells());
 
         if (this.listener != null) {
             if (status == GameStatus.WIN) {
-                this.listener.onGameFinished(payer);
+                this.listener.onGameFinished(player);
                 return true;
             } else if (status == GameStatus.DRAW) {
                 this.listener.onGameDraw();
@@ -67,33 +24,33 @@ public class GameEngine {
         }
         return false;
     }
+*/
 
-    private GameStatus getGameStatus() {
-        if (checkVertical() || checkHorizontal() /*|| checkLeftDiagonal() || checkRightDiagonal()*/)
+    public GameStatus getGameStatus(Cell[][] cellArray) {
+        if (checkVertical(cellArray) || checkHorizontal(cellArray) /*|| checkLeftDiagonal() || checkRightDiagonal()*/)
             return GameStatus.WIN;
-        else if (checkDraw())
+        else if (checkDraw(cellArray))
             return GameStatus.DRAW;
 
         return GameStatus.NONE;
     }
 
-    private boolean checkHorizontal() {
-        Cell[][] cells = gameBoard.cellArray;
-        int size = cells.length, hSum = 0, dSum = 0;
+    private boolean checkHorizontal(Cell[][] cellArray) {
+        int size = cellArray.length, hSum = 0, dSum = 0;
         for (int row = 0; row < size; row++) {
             hSum = 0;
             for (int col = 0; col < size; col++) {
 
-                hSum += cells[row][col].getState().value();
+                hSum += cellArray[row][col].getState().value();
 
-                if (Math.abs(hSum) == gameBoard.getSize()) {
+                if (Math.abs(hSum) == cellArray.length) {
                     return true;
                 }
 
                 if (row == col) {
-                    dSum += cells[row][col].state.value();
+                    dSum += cellArray[row][col].state.value();
 
-                    if (Math.abs(dSum) == gameBoard.getSize()) {
+                    if (Math.abs(dSum) == cellArray.length) {
                         return true;
                     }
                 }
@@ -102,22 +59,21 @@ public class GameEngine {
         return false;
     }
 
-    private boolean checkVertical() {
-        Cell[][] cells = gameBoard.cellArray;
-        int size = cells.length, vSum = 0, dSum = 0;
+    private boolean checkVertical(Cell[][] cellArray) {
+        int size = cellArray.length, vSum = 0, dSum = 0;
         for (int col = 0; col < size; col++) {
             vSum = 0;
             for (int row = 0; row < size; row++) {
 
-                vSum += cells[row][col].state.value();
+                vSum += cellArray[row][col].state.value();
 
-                if (Math.abs(vSum) == gameBoard.getSize()) {
+                if (Math.abs(vSum) == cellArray.length) {
                     return true;
                 }
 
                 if (row + col == size - 1) {
-                    dSum += cells[row][col].state.value();
-                    if (Math.abs(dSum) == gameBoard.getSize()) {
+                    dSum += cellArray[row][col].state.value();
+                    if (Math.abs(dSum) == cellArray.length) {
                         return true;
                     }
                 }
@@ -160,14 +116,13 @@ public class GameEngine {
         return false;
     }*/
 
-    private boolean checkDraw() {
-        Cell[][] cells = gameBoard.cellArray;
-        int size = cells.length, sum = 0;
+    private boolean checkDraw(Cell[][] cellArray) {
+        int size = cellArray.length, sum = 0;
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
-                sum += Math.abs(cells[row][col].getState().value());
+                sum += Math.abs(cellArray[row][col].getState().value());
 
-                if (sum == Math.pow(gameBoard.getSize(), 2)) {
+                if (sum == Math.pow(cellArray.length, 2)) {
                     return true;
                 }
             }

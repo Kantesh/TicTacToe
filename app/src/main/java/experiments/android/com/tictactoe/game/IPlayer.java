@@ -6,11 +6,11 @@ package experiments.android.com.tictactoe.game;
 
 public interface IPlayer {
 
-    Cell.CellState getValue();
-
-    boolean isHuman();
+    Cell.CellState getSeed();
 
     void play();
 
     String getName();
+
+    void setListener(IPlayerListener listener);
 }

@@ -2,7 +2,8 @@ package experiments.android.com.tictactoe.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.*;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -15,6 +16,7 @@ public class TTTGameActivity extends AppCompatActivity implements GameBoardView 
 
     private GamePresenter presenter;
     private TableLayout gameBoardLinearLayout;
+    private Button restartBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +30,14 @@ public class TTTGameActivity extends AppCompatActivity implements GameBoardView 
         gameBoardLinearLayout = (TableLayout) findViewById(R.id.game_board_layout);
         gameBoardLinearLayout.setStretchAllColumns(true);
         gameBoardLinearLayout.setShrinkAllColumns(true);
+
+        restartBtn = (Button) findViewById(R.id.restart_btn);
+        restartBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.restartClicked();
+            }
+        });
     }
 
     @Override
@@ -61,5 +71,10 @@ public class TTTGameActivity extends AppCompatActivity implements GameBoardView 
     @Override
     public void updateScoreboard(GameScoreBoard scoreBoard) {
         ((TextView) findViewById(R.id.score_board)).setText("Wins: " + scoreBoard.getWins() + " Loses: " + scoreBoard.getLoses() + " Ties: " + scoreBoard.getTies());
+    }
+
+    @Override
+    public void showRestart(boolean show) {
+        restartBtn.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 }

@@ -6,14 +6,22 @@ package experiments.android.com.tictactoe.game;
 
 public class GameBoard {
 
+    public interface GameListener {
+        void onGameFinished(IPlayer winner);
+        void onGameDraw();
+        void cellAlreadySeeded();
+    }
+
     private final int size;
-    public Cell[][] cellArray;
+    private Cell[][] cellArray;
+    private GameEngine gameEngine;
+    private GameListener listener;
 
-
-    public GameBoard(int size) {
+    public GameBoard(int size, GameEngine gameEngine, GameListener listener) {
         this.size = size;
         cellArray = new Cell[size][size];
-
+        this.gameEngine = gameEngine;
+        this.listener = listener;
         init();
     }
 
@@ -23,6 +31,34 @@ public class GameBoard {
                 cellArray[rowIndex][colIndex] = new Cell();
             }
         }
+    }
+
+    public Cell[][] getCells() {
+        return cellArray;
+    }
+
+    public boolean markCell(int row, int col, IPlayer player) {
+        if (isCellAvailable(row, col)) {
+            setCellValue(row, col, player.getSeed());
+
+            GameEngine.GameStatus status = gameEngine.getGameStatus(cellArray);
+
+            if (status == GameEngine.GameStatus.WIN) {
+                this.listener.onGameFinished(player);
+            } else if (status == GameEngine.GameStatus.DRAW) {
+                this.listener.onGameDraw();
+            } /*else {
+                flipTurn();
+            }*/
+            return true;
+        } else {
+            this.listener.cellAlreadySeeded();
+            return false;
+        }
+    }
+
+    public boolean isCellAvailable(int row, int col) {
+        return getCell(row, col).isEmpty();
     }
 
     public void setCellValue(int row, int col, Cell.CellState value) {
