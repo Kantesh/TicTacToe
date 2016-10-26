@@ -5,7 +5,7 @@ package experiments.android.com.tictactoe.game;
  */
 
 public interface IPlayerListener {
-    void onMoveAvailable(int row, int col);
-    void onManualMove();
+    void onMakeMove();
     void onMoveNotAvailable();
+    void onMoveDone();
 }

@@ -8,9 +8,11 @@ public interface IPlayer {
 
     Cell.CellState getSeed();
 
-    void play();
+    void requestPlay();
 
     String getName();
 
     void setListener(IPlayerListener listener);
+
+    void makeMove(int row, int col);
 }

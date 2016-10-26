@@ -1,5 +1,6 @@
 package experiments.android.com.tictactoe.game;
 
+import android.graphics.Point;
 import android.support.v4.util.Pair;
 
 /**
@@ -11,24 +12,26 @@ public class MachinePlayer implements IPlayer {
     private final IPlayerBrain playerBrain;
     public final Cell.CellState seed;
     private final String name;
+    private final GameBoard board;
     private IPlayerListener listener;
 
-    public MachinePlayer(String name, Cell.CellState seed, IPlayerBrain playerBrain) {
+    public MachinePlayer(String name, Cell.CellState seed, GameBoard gameBoard, IPlayerBrain playerBrain) {
         this.seed = seed;
         this.playerBrain = playerBrain;
         this.name = name;
+        this.board = gameBoard;
     }
 
     @Override
     public Cell.CellState getSeed() {
-        return Cell.CellState.NOUGHT;
+        return seed;
     }
 
     @Override
-    public void play() {
+    public void requestPlay() {
         if (listener != null) {
-            Pair<Integer, Integer> move = playerBrain.getMove();
-            listener.onMoveAvailable(move.first, move.second);
+            Point move = playerBrain.getMove(board.getCells());
+            makeMove(move.x, move.y);
         }
     }
 
@@ -40,5 +43,16 @@ public class MachinePlayer implements IPlayer {
     @Override
     public void setListener(IPlayerListener listener) {
         this.listener = listener;
+    }
+
+    @Override
+    public void makeMove(int row, int col) {
+        if (board.markCell(row, col, seed)) {
+            if (listener != null)
+                listener.onMoveDone();
+        } else {
+            if (listener != null)
+                listener.onMoveNotAvailable();
+        }
     }
 }

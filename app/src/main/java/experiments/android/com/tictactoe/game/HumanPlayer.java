@@ -8,22 +8,24 @@ public class HumanPlayer implements IPlayer {
 
     public final Cell.CellState seed;
     private final String name;
+    private final GameBoard board;
     private IPlayerListener listener;
 
-    public HumanPlayer(String name, Cell.CellState seed) {
+    public HumanPlayer(String name, Cell.CellState seed, GameBoard gameBoard) {
         this.name = name;
         this.seed = seed;
+        this.board = gameBoard;
     }
 
     @Override
     public Cell.CellState getSeed() {
-        return Cell.CellState.CROSS;
+        return seed;
     }
 
     @Override
-    public void play() {
+    public void requestPlay() {
         if (listener != null) {
-            listener.onManualMove();
+            listener.onMakeMove();
         }
     }
 
@@ -35,5 +37,16 @@ public class HumanPlayer implements IPlayer {
     @Override
     public void setListener(IPlayerListener listener) {
         this.listener = listener;
+    }
+
+    @Override
+    public void makeMove(int row, int col) {
+        if (board.markCell(row, col, seed)) {
+            if (listener != null)
+                listener.onMoveDone();
+        } else {
+            if (listener != null)
+                listener.onMoveNotAvailable();
+        }
     }
 }

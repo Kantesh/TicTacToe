@@ -6,25 +6,21 @@ package experiments.android.com.tictactoe.game;
 
 public class GameEngine {
 
-    public GameEngine() {
+    private final IGameListener listener;
+
+    public GameEngine(IGameListener listener) {
+        this.listener = listener;
     }
-/*
 
-    public boolean checkGameStatus(GameBoard gameBoard) {
-        GameStatus status = getGameStatus(gameBoard.getCells());
+    public void checkGameStatus(Cell[][] cellArray) {
+        GameEngine.GameStatus status = getGameStatus(cellArray);
 
-        if (this.listener != null) {
-            if (status == GameStatus.WIN) {
-                this.listener.onGameFinished(player);
-                return true;
-            } else if (status == GameStatus.DRAW) {
-                this.listener.onGameDraw();
-                return true;
-            }
+        if (status == GameEngine.GameStatus.WIN) {
+            this.listener.onGameFinished();
+        } else if (status == GameEngine.GameStatus.DRAW) {
+            this.listener.onGameDraw();
         }
-        return false;
     }
-*/
 
     public GameStatus getGameStatus(Cell[][] cellArray) {
         if (checkVertical(cellArray) || checkHorizontal(cellArray) /*|| checkLeftDiagonal() || checkRightDiagonal()*/)
