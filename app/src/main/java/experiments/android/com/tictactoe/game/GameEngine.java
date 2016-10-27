@@ -44,7 +44,7 @@ public class GameEngine {
                 }
 
                 if (row == col) {
-                    dSum += cellArray[row][col].state.value();
+                    dSum += cellArray[row][col].getState().value();
 
                     if (Math.abs(dSum) == cellArray.length) {
                         return true;
@@ -61,14 +61,14 @@ public class GameEngine {
             vSum = 0;
             for (int row = 0; row < size; row++) {
 
-                vSum += cellArray[row][col].state.value();
+                vSum += cellArray[row][col].getState().value();
 
                 if (Math.abs(vSum) == cellArray.length) {
                     return true;
                 }
 
                 if (row + col == size - 1) {
-                    dSum += cellArray[row][col].state.value();
+                    dSum += cellArray[row][col].getState().value();
                     if (Math.abs(dSum) == cellArray.length) {
                         return true;
                     }

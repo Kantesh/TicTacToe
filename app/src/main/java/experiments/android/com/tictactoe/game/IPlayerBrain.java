@@ -7,5 +7,5 @@ import android.graphics.Point;
  */
 
 public interface IPlayerBrain {
-    Point getMove(Cell[][] cells);
+    Point getMove(Cell[][] cells, IPlayer player);
 }

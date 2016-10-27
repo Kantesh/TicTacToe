@@ -1,7 +1,6 @@
 package experiments.android.com.tictactoe.game;
 
 import android.graphics.Point;
-import android.support.v4.util.Pair;
 
 /**
  * Created by kanteshb on 10/25/16.
@@ -10,10 +9,11 @@ import android.support.v4.util.Pair;
 public class MachinePlayer implements IPlayer {
 
     private final IPlayerBrain playerBrain;
-    public final Cell.CellState seed;
+    private final Cell.CellState seed;
     private final String name;
     private final GameBoard board;
     private IPlayerListener listener;
+    private IPlayer opponent;
 
     public MachinePlayer(String name, Cell.CellState seed, GameBoard gameBoard, IPlayerBrain playerBrain) {
         this.seed = seed;
@@ -27,10 +27,19 @@ public class MachinePlayer implements IPlayer {
         return seed;
     }
 
+    public void setOpponent(IPlayer player) {
+        opponent = player;
+    }
+
+    @Override
+    public IPlayer getOpponent() {
+        return opponent;
+    }
+
     @Override
     public void requestPlay() {
         if (listener != null) {
-            Point move = playerBrain.getMove(board.getCells());
+            Point move = playerBrain.getMove(board.getCells(), this);
             makeMove(move.x, move.y);
         }
     }

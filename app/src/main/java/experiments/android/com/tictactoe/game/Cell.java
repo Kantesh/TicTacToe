@@ -6,7 +6,7 @@ package experiments.android.com.tictactoe.game;
 
 public class Cell {
 
-    CellState state = CellState.EMPTY;
+    private CellState state = CellState.EMPTY;
     private boolean empty;
 
     public void setValue(CellState value) {
@@ -19,6 +19,10 @@ public class Cell {
 
     public boolean isEmpty() {
         return state == CellState.EMPTY;
+    }
+
+    public void clearState() {
+        state = CellState.EMPTY;
     }
 
     public enum CellState {

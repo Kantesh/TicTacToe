@@ -15,4 +15,8 @@ public interface IPlayer {
     void setListener(IPlayerListener listener);
 
     void makeMove(int row, int col);
+
+    void setOpponent(IPlayer player);
+
+    IPlayer getOpponent();
 }

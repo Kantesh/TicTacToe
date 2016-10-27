@@ -6,7 +6,6 @@ package experiments.android.com.tictactoe.game;
 
 public class GameBoard {
 
-
     private final int size;
     private Cell[][] cellArray;
     private GameEngine gameEngine;

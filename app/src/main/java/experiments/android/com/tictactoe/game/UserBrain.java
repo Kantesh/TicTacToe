@@ -9,11 +9,10 @@ import android.graphics.Point;
 public class UserBrain implements IPlayerBrain {
 
     public UserBrain(GameBoard gameBoard) {
-
     }
 
     @Override
-    public Point getMove(Cell[][] cells) {
+    public Point getMove(Cell[][] cells, IPlayer player) {
         return null;
     }
 }

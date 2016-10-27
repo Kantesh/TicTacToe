@@ -39,6 +39,8 @@ public class GamePresenter implements IPlayerListener, IGameListener {
 
         humanPlayer = new HumanPlayer("Jack", Cell.CellState.CROSS, gameBoard);
         machinePlayer = new MachinePlayer("Jones", Cell.CellState.NOUGHT, gameBoard, new MachineBrain());
+        humanPlayer.setOpponent(machinePlayer);
+        machinePlayer.setOpponent(humanPlayer);
         humanPlayer.setListener(this);
         machinePlayer.setListener(this);
         curPlayer = humanPlayer;

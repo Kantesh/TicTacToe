@@ -10,6 +10,7 @@ public class HumanPlayer implements IPlayer {
     private final String name;
     private final GameBoard board;
     private IPlayerListener listener;
+    private IPlayer opponent;
 
     public HumanPlayer(String name, Cell.CellState seed, GameBoard gameBoard) {
         this.name = name;
@@ -20,6 +21,15 @@ public class HumanPlayer implements IPlayer {
     @Override
     public Cell.CellState getSeed() {
         return seed;
+    }
+
+    public void setOpponent(IPlayer player) {
+        opponent = player;
+    }
+
+    @Override
+    public IPlayer getOpponent() {
+        return opponent;
     }
 
     @Override
