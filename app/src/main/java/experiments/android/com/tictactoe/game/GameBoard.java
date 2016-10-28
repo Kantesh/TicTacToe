@@ -17,7 +17,7 @@ public class GameBoard {
         init();
     }
 
-    public void init() {
+    private void init() {
         for (int rowIndex = 0; rowIndex < size; rowIndex++) {
             for (int colIndex = 0; colIndex < size; colIndex++) {
                 cellArray[rowIndex][colIndex] = new Cell();

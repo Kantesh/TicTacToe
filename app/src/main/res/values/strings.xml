@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">TicTacToeGame</string>
+
+    <!--Game board-->
+    <string name="msg_game_over_win">Game over and winner is: %s</string>
+    <string name="msg_game_over_draw">Game over and Draw</string>
+    <string name="msg_waiting_input">Waiting for user input…</string>
+    <string name="error_move_unavailable">Move not available.</string>
+
+    <!--Score board-->
+    <string name="score_board_data_string" formatted="false">Wins: %d Loses: %d Ties: %d</string>
+
 </resources>

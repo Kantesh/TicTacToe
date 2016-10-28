@@ -1,6 +1,7 @@
 package experiments.android.com.tictactoe.ui;
 
 import experiments.android.com.tictactoe.Constants;
+import experiments.android.com.tictactoe.R;
 import experiments.android.com.tictactoe.game.Cell;
 import experiments.android.com.tictactoe.game.GameBoard;
 import experiments.android.com.tictactoe.game.GameEngine;
@@ -18,23 +19,26 @@ import experiments.android.com.tictactoe.game.MachinePlayer;
 
 public class GamePresenter implements IPlayerListener, IGameListener {
 
-    private final GameBoardView gameBoardView;
+    private final IGameBoardView gameBoardView;
 
-    private final GameBoard gameBoard;
-    private final GameEngine gameEngine;
-    private final GameScoreBoard scoreBoard;
+    private GameBoard gameBoard;
+    private GameEngine gameEngine;
+    private GameScoreBoard scoreBoard;
 
     private IPlayer humanPlayer;
     private IPlayer machinePlayer;
     private boolean isGameOver;
     private IPlayer curPlayer;
 
-    public GamePresenter(GameBoardView view) {
+    public GamePresenter(IGameBoardView view) {
         this.gameBoardView = view;
+        initGame();
+    }
 
+    private void initGame() {
         gameEngine = new GameEngine(this);
         gameBoard = new GameBoard(Constants.BOARD_SIZE, gameEngine);
-        gameBoardView.showBoard(gameBoard.getCells());
+        gameBoardView.initBoard(gameBoard.getCells());
         scoreBoard = new GameScoreBoard();
 
         humanPlayer = new HumanPlayer("Jack", Cell.CellState.CROSS, gameBoard);
@@ -75,7 +79,8 @@ public class GamePresenter implements IPlayerListener, IGameListener {
             scoreBoard.increamentLoses();
 
         gameBoardView.showRestart(true);
-        gameBoardView.showMessage("Game over and winner is: " + curPlayer.getName());
+
+        gameBoardView.showMessage(String.format(gameBoardView.getContext().getString(R.string.msg_game_over_win), curPlayer.getName()));
         gameBoardView.updateScoreboard(scoreBoard);
     }
 
@@ -84,14 +89,14 @@ public class GamePresenter implements IPlayerListener, IGameListener {
         isGameOver = true;
         gameBoardView.showRestart(true);
         scoreBoard.increamentTies();
-        gameBoardView.showMessage("Game over and Draw");
+        gameBoardView.showMessage(gameBoardView.getContext().getString(R.string.msg_game_over_draw));
         gameBoardView.updateScoreboard(scoreBoard);
     }
 
     private void resetGame() {
         isGameOver = false;
         gameBoard.reset();
-        gameBoardView.showBoard(gameBoard.getCells());
+        gameBoardView.updateBoard(gameBoard.getCells());
     }
 
     public void restartClicked() {
@@ -99,24 +104,19 @@ public class GamePresenter implements IPlayerListener, IGameListener {
         curPlayer.requestPlay();
     }
 
-    /*@Override
-    public void onMoveAvailable(int row, int col) {
-        attemptMarkCell(row, col);
-    }*/
-
     @Override
     public void onMakeMove() {
-        gameBoardView.showMessage("Waiting for user input...");
+        gameBoardView.showMessage(gameBoardView.getContext().getString(R.string.msg_waiting_input));
     }
 
     @Override
     public void onMoveNotAvailable() {
-        gameBoardView.showMessage("Move not available.");
+        gameBoardView.showMessage(gameBoardView.getContext().getString(R.string.error_move_unavailable));
     }
 
     @Override
     public void onMoveDone() {
-        gameBoardView.showBoard(gameBoard.getCells());
+        gameBoardView.updateBoard(gameBoard.getCells());
         if (!isGameOver) {
             flipTurn();
             curPlayer.requestPlay();

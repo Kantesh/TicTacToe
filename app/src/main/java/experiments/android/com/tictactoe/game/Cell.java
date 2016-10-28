@@ -7,9 +7,8 @@ package experiments.android.com.tictactoe.game;
 public class Cell {
 
     private CellState state = CellState.EMPTY;
-    private boolean empty;
 
-    public void setValue(CellState value) {
+    void setValue(CellState value) {
         this.state = value;
     }
 
@@ -21,45 +20,49 @@ public class Cell {
         return state == CellState.EMPTY;
     }
 
-    public void clearState() {
+    void clearState() {
         state = CellState.EMPTY;
     }
 
     public enum CellState {
 
-        CROSS, NOUGHT, EMPTY;
-
-        public int value() {
-
-            switch (this) {
-
-                case CROSS:
-                    return 1;
-
-                case NOUGHT:
-                    return -1;
-
-                case EMPTY:
-                    return 0;
-
+        CROSS {
+            @Override
+            public int value() {
+                return 1;
             }
-            return 0;
-        }
 
-        public String symbol() {
-
-            switch (this) {
-
-                case CROSS:
-                    return "X";
-
-                case NOUGHT:
-                    return "O";
-
-                case EMPTY:
-                    return "";
+            @Override
+            public String symbol() {
+                return "X";
             }
-            return "";
-        }
+        },
+
+        NOUGHT {
+            @Override
+            public int value() {
+                return -1;
+            }
+
+            @Override
+            public String symbol() {
+                return "O";
+            }
+        },
+
+        EMPTY {
+            @Override
+            public int value() {
+                return 0;
+            }
+
+            @Override
+            public String symbol() {
+                return "";
+            }
+        };
+
+        abstract public int value();
+        abstract public String symbol();
     }
 }

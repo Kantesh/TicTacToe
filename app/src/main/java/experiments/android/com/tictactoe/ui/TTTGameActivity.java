@@ -1,5 +1,7 @@
 package experiments.android.com.tictactoe.ui;
 
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -8,14 +10,19 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import experiments.android.com.tictactoe.R;
 import experiments.android.com.tictactoe.game.Cell;
 import experiments.android.com.tictactoe.game.GameScoreBoard;
 
-public class TTTGameActivity extends AppCompatActivity implements GameBoardView {
+public class TTTGameActivity extends AppCompatActivity implements IGameBoardView, Board.IBoardListener {
 
     private GamePresenter presenter;
-    private TableLayout gameBoardLinearLayout;
+    private Board board;
     private Button restartBtn;
 
     @Override
@@ -27,9 +34,8 @@ public class TTTGameActivity extends AppCompatActivity implements GameBoardView 
     }
 
     private void initViews() {
-        gameBoardLinearLayout = (TableLayout) findViewById(R.id.game_board_layout);
-        gameBoardLinearLayout.setStretchAllColumns(true);
-        gameBoardLinearLayout.setShrinkAllColumns(true);
+        board = (Board) findViewById(R.id.game_board_layout);
+        board.setListener(this);
 
         restartBtn = (Button) findViewById(R.id.restart_btn);
         restartBtn.setOnClickListener(new View.OnClickListener() {
@@ -41,40 +47,38 @@ public class TTTGameActivity extends AppCompatActivity implements GameBoardView 
     }
 
     @Override
+    public void initBoard(Cell[][] cells) {
+        board.init(cells.length);
+    }
+
+    @Override
+    public void updateBoard(Cell[][] cellArray) {
+        board.updateBoard(cellArray);
+    }
+
+    @Override
+    public void updateScoreboard(GameScoreBoard scoreBoard) {
+        ((TextView) findViewById(R.id.score_board)).setText(String.format(getString(R.string.score_board_data_string), scoreBoard.getWins(), scoreBoard.getLoses(), scoreBoard.getTies()));
+    }
+
+
+    @Override
     public void showMessage(String msg) {
         ((TextView) findViewById(R.id.message)).setText(msg);
     }
 
     @Override
-    public void showBoard(Cell[][] cellArray) {
-        int size = cellArray.length;
-        gameBoardLinearLayout.removeAllViews();
-        for (int row = 0; row < size; row++) {
-            TableRow tableRow = new TableRow(this);
-            for (int col = 0; col < size; col++) {
-                View view = getLayoutInflater().inflate(R.layout.table_cell_layout, null);
-                ((TextView) view.findViewById(R.id.cell_value_tv)).setText(cellArray[row][col].getState().symbol());
-                final int seedRowIndex = row;
-                final int seedColIndex = col;
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        presenter.cellClicked(seedRowIndex, seedColIndex);
-                    }
-                });
-                tableRow.addView(view);
-            }
-            gameBoardLinearLayout.addView(tableRow);
-        }
-    }
-
-    @Override
-    public void updateScoreboard(GameScoreBoard scoreBoard) {
-        ((TextView) findViewById(R.id.score_board)).setText("Wins: " + scoreBoard.getWins() + " Loses: " + scoreBoard.getLoses() + " Ties: " + scoreBoard.getTies());
-    }
-
-    @Override
     public void showRestart(boolean show) {
         restartBtn.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
+    public void onCellClicked(int row, int col) {
+        presenter.cellClicked(row, col);
     }
 }

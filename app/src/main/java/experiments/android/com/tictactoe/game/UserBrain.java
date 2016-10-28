@@ -8,7 +8,10 @@ import android.graphics.Point;
 
 public class UserBrain implements IPlayerBrain {
 
-    public UserBrain(GameBoard gameBoard) {
+    private IPlayer player;
+
+    public UserBrain(IPlayer player) {
+        this.player = player;
     }
 
     @Override

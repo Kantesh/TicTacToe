@@ -22,8 +22,8 @@ public class GameEngine {
         }
     }
 
-    public GameStatus getGameStatus(Cell[][] cellArray) {
-        if (checkVertical(cellArray) || checkHorizontal(cellArray) /*|| checkLeftDiagonal() || checkRightDiagonal()*/)
+    private GameStatus getGameStatus(Cell[][] cellArray) {
+        if (checkVerticalAndSumDiagonal(cellArray) || checkHorizontalAndEqualsDiagonal(cellArray))
             return GameStatus.WIN;
         else if (checkDraw(cellArray))
             return GameStatus.DRAW;
@@ -31,7 +31,7 @@ public class GameEngine {
         return GameStatus.NONE;
     }
 
-    private boolean checkHorizontal(Cell[][] cellArray) {
+    private boolean checkHorizontalAndEqualsDiagonal(Cell[][] cellArray) {
         int size = cellArray.length, hSum = 0, dSum = 0;
         for (int row = 0; row < size; row++) {
             hSum = 0;
@@ -55,7 +55,7 @@ public class GameEngine {
         return false;
     }
 
-    private boolean checkVertical(Cell[][] cellArray) {
+    private boolean checkVerticalAndSumDiagonal(Cell[][] cellArray) {
         int size = cellArray.length, vSum = 0, dSum = 0;
         for (int col = 0; col < size; col++) {
             vSum = 0;
@@ -78,40 +78,6 @@ public class GameEngine {
         return false;
     }
 
-    /*private boolean checkLeftDiagonal() {
-        Cell[][] cells = gameBoard.cellArray;
-        int size = cells.length, dSum = 0;
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-
-                if (row == col) {
-                    dSum += cells[row][col].state.value();
-
-                    if (Math.abs(dSum) == Constants.BOARD_SIZE) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean checkRightDiagonal() {
-        Cell[][] cells = gameBoard.cellArray;
-        int size = cells.length, dSum = 0;
-        for (int row = 0; row < size; row++) {
-            for (int col = 0; col < size; col++) {
-                if (row + col == size - 1) {
-                    dSum += cells[row][col].state.value();
-                    if (Math.abs(dSum) == Constants.BOARD_SIZE) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }*/
-
     private boolean checkDraw(Cell[][] cellArray) {
         int size = cellArray.length, sum = 0;
         for (int row = 0; row < size; row++) {
@@ -126,7 +92,7 @@ public class GameEngine {
         return false;
     }
 
-    enum GameStatus {
+    private enum GameStatus {
         WIN, DRAW, NONE
     }
 }

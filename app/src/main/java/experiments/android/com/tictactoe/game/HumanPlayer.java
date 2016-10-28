@@ -6,7 +6,7 @@ package experiments.android.com.tictactoe.game;
 
 public class HumanPlayer implements IPlayer {
 
-    public final Cell.CellState seed;
+    private final Cell.CellState seed;
     private final String name;
     private final GameBoard board;
     private IPlayerListener listener;

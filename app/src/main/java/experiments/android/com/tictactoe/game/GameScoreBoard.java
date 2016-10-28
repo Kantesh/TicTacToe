@@ -6,7 +6,7 @@ package experiments.android.com.tictactoe.game;
 
 public class GameScoreBoard {
 
-    int wins, loses, ties;
+    private int wins, loses, ties;
 
     public int getWins() {
         return wins;
