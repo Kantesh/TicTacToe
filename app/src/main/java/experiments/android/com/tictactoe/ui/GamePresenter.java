@@ -48,6 +48,7 @@ public class GamePresenter implements IPlayerListener, IGameListener {
         humanPlayer.setListener(this);
         machinePlayer.setListener(this);
         curPlayer = humanPlayer;
+        curPlayer.requestPlay();
     }
 
     public void cellClicked(int row, int col) {

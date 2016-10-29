@@ -71,7 +71,7 @@ public class MachineBrain implements IPlayerBrain {
 
         // If there are no more moves and no winner then
         // it is a tie
-        if (!isMovesLeft(cells) || score == 0)
+        if (!isMovesLeft(cells) || depth == size - 1)
             return 0;
 
         if (isMax) { // If this maximizer's move
@@ -119,60 +119,48 @@ public class MachineBrain implements IPlayerBrain {
     }
 
     private int evaluate(Cell[][] cells) {
-
+        int size = cells.length;
+        int xsum;
+        int ysum;
+        int totalPlayerWinVlaue = player.getSeed().value() * size;
+        int totalOpponentWinVlaue = player.getOpponent().getSeed().value() * size;
 
         // Checking for Rows for X or O victory.
-        for (int row = 0; row < cells.length; row++) {
-            int sum = 0;
-            for (int col = 0; col < cells.length; col++) {
-                sum += cells[row][col].getState().value();
+        for (int row = 0; row < size; row++) {
+            xsum = 0;
+            for (int col = 0; col < size; col++) {
+                xsum += cells[row][col].getState().value();
             }
-            if (sum == player.getSeed().value() * cells.length)
+            if (xsum == totalPlayerWinVlaue)
                 return +EVALUATION_SCORE;
-            else if (sum == player.getOpponent().getSeed().value() * cells.length)
+            else if (xsum == totalOpponentWinVlaue)
                 return -EVALUATION_SCORE;
         }
 
         // Checking for Columns for X or O victory.
-        for (int col = 0; col < cells.length; col++) {
-            int sum = 0;
-            for (int row = 0; row < cells.length; row++) {
-                sum += cells[row][col].getState().value();
+        for (int col = 0; col < size; col++) {
+            ysum = 0;
+            for (int row = 0; row < size; row++) {
+                ysum += cells[row][col].getState().value();
             }
 
-            if (sum == player.getSeed().value() * cells.length)
+            if (ysum == totalPlayerWinVlaue)
                 return +EVALUATION_SCORE;
-            else if (sum == player.getOpponent().getSeed().value() * cells.length)
+            else if (ysum == totalOpponentWinVlaue)
                 return -EVALUATION_SCORE;
         }
 
+        xsum = 0;
+        ysum = 0;
         // Checking for Diagonals for X or O victory.
-        int sum = 0;
-        for (int row = 0; row < cells.length; row++) {
-            for (int col = 0; col < cells.length; col++) {
-                if (row == col) {
-                    sum += cells[row][col].getState().value();
-                    break;
-                }
-            }
+        for (int i = 0; i < size; i++) {
+                xsum += cells[i][i].getState().value();
+                ysum += cells[i][size - 1 - i].getState().value();
         }
-        if (sum == player.getSeed().value() * cells.length)
-            return +EVALUATION_SCORE;
-        else if (sum == player.getOpponent().getSeed().value() * cells.length)
-            return -EVALUATION_SCORE;
 
-        sum = 0;
-        for (int row = 0; row < cells.length; row++) {
-            for (int col = 0; col < cells.length; col++) {
-                if (row + col == cells.length - 1) {
-                    sum += cells[row][col].getState().value();
-                    break;
-                }
-            }
-        }
-        if (sum == player.getSeed().value() * cells.length)
+        if (xsum == totalPlayerWinVlaue || ysum == totalPlayerWinVlaue)
             return +EVALUATION_SCORE;
-        else if (sum == player.getOpponent().getSeed().value() * cells.length)
+        else if (xsum == totalOpponentWinVlaue || ysum == totalOpponentWinVlaue)
             return -EVALUATION_SCORE;
 
         // Else if none of them have won then return 0
