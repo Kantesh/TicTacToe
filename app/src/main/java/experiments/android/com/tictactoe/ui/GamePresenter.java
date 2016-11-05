@@ -13,6 +13,8 @@ import experiments.android.com.tictactoe.game.IPlayerListener;
 import experiments.android.com.tictactoe.game.MachineBrain;
 import experiments.android.com.tictactoe.game.MachinePlayer;
 
+import static experiments.android.com.tictactoe.Constants.WINNING_SIZE;
+
 /**
  * Created by kanteshb on 10/25/16.
  */
@@ -36,7 +38,8 @@ public class GamePresenter implements IPlayerListener, IGameListener {
     }
 
     private void initGame() {
-        gameEngine = new GameEngine(this);
+        gameEngine = new GameEngine(this, WINNING_SIZE);
+
         gameBoard = new GameBoard(Constants.BOARD_SIZE, gameEngine);
         gameBoardView.initBoard(gameBoard.getCells());
         scoreBoard = new GameScoreBoard();
@@ -47,7 +50,7 @@ public class GamePresenter implements IPlayerListener, IGameListener {
         machinePlayer.setOpponent(humanPlayer);
         humanPlayer.setListener(this);
         machinePlayer.setListener(this);
-        curPlayer = humanPlayer;
+        curPlayer = machinePlayer;
         curPlayer.requestPlay();
     }
 
@@ -63,11 +66,8 @@ public class GamePresenter implements IPlayerListener, IGameListener {
             curPlayer.makeMove(row, col);
     }
 
-    public void flipTurn() {
-        if (curPlayer.equals(humanPlayer))
-            curPlayer = machinePlayer;
-        else
-            curPlayer = humanPlayer;
+    private void flipTurn() {
+        curPlayer = curPlayer.getOpponent();
     }
 
     @Override

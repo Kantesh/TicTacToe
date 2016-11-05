@@ -26,41 +26,49 @@ public class Cell {
 
     public enum CellState {
 
-        CROSS {
+        CROSS("X", 1) {
             @Override
             public int value() {
-                return 1;
+                return this.value;
             }
 
             @Override
             public String symbol() {
-                return "X";
+                return this.symbol;
             }
         },
 
-        NOUGHT {
+        NOUGHT("O", -1) {
             @Override
             public int value() {
-                return -1;
+                return this.value;
             }
 
             @Override
             public String symbol() {
-                return "O";
+                return this.symbol;
             }
         },
 
-        EMPTY {
+        EMPTY ("", 0) {
             @Override
             public int value() {
-                return 0;
+                return this.value;
             }
 
             @Override
             public String symbol() {
-                return "";
+                return this.symbol;
             }
         };
+
+        protected final String symbol;
+        protected final int value;
+
+        CellState(String symbol, int value) {
+            this.symbol = symbol;
+            this.value = value;
+        }
 
         abstract public int value();
         abstract public String symbol();
