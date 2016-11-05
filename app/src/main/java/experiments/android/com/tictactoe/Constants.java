@@ -6,4 +6,6 @@ package experiments.android.com.tictactoe;
 
 public class Constants {;
     public static final int BOARD_SIZE = 4;
+    public static final int WINNING_SIZE = 3;
+
 }

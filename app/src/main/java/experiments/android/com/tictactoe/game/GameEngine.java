@@ -7,9 +7,15 @@ package experiments.android.com.tictactoe.game;
 public class GameEngine {
 
     private final IGameListener listener;
+    private int winingRecurances;
 
-    public GameEngine(IGameListener listener) {
+    public GameEngine(IGameListener listener, int boardSize) {
         this.listener = listener;
+        this.winingRecurances = boardSize;
+    }
+
+    public void setWinningRecurance(int size) {
+        winingRecurances = size;
     }
 
     public void checkGameStatus(Cell[][] cellArray) {
@@ -39,14 +45,14 @@ public class GameEngine {
 
                 hSum += cellArray[row][col].getState().value();
 
-                if (Math.abs(hSum) == cellArray.length) {
+                if (Math.abs(hSum) == winingRecurances) {
                     return true;
                 }
 
                 if (row == col) {
                     dSum += cellArray[row][col].getState().value();
 
-                    if (Math.abs(dSum) == cellArray.length) {
+                    if (Math.abs(dSum) == winingRecurances) {
                         return true;
                     }
                 }
@@ -63,13 +69,13 @@ public class GameEngine {
 
                 vSum += cellArray[row][col].getState().value();
 
-                if (Math.abs(vSum) == cellArray.length) {
+                if (Math.abs(vSum) == winingRecurances) {
                     return true;
                 }
 
                 if (row + col == size - 1) {
                     dSum += cellArray[row][col].getState().value();
-                    if (Math.abs(dSum) == cellArray.length) {
+                    if (Math.abs(dSum) == winingRecurances) {
                         return true;
                     }
                 }
@@ -84,7 +90,7 @@ public class GameEngine {
             for (int col = 0; col < size; col++) {
                 sum += Math.abs(cellArray[row][col].getState().value());
 
-                if (sum == Math.pow(cellArray.length, 2)) {
+                if (sum == Math.pow(winingRecurances, 2)) {
                     return true;
                 }
             }

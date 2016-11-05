@@ -1,7 +1,8 @@
 package experiments.android.com.tictactoe.game;
 
 import android.graphics.Point;
-import android.util.Log;
+
+import static experiments.android.com.tictactoe.Constants.WINNING_SIZE;
 
 /**
  * Created by kantesh on 10/26/16.
@@ -122,8 +123,8 @@ public class MachineBrain implements IPlayerBrain {
         int size = cells.length;
         int xsum;
         int ysum;
-        int totalPlayerWinVlaue = player.getSeed().value() * size;
-        int totalOpponentWinVlaue = player.getOpponent().getSeed().value() * size;
+        int totalPlayerWinVlaue = player.getSeed().value() * WINNING_SIZE;
+        int totalOpponentWinVlaue = player.getOpponent().getSeed().value() * WINNING_SIZE;
 
         // Checking for Rows for X or O victory.
         for (int row = 0; row < size; row++) {
